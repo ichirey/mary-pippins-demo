@@ -365,11 +365,83 @@
     background:rgba(181,103,126,0.08); border:1px solid rgba(181,103,126,0.3); border-radius:999px;
     padding:5px 12px; cursor:pointer;
   }
+
+  /* ---------- Login screen ---------- */
+  .login-screen{
+    position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(1100px 620px at 84% -10%, rgba(181,103,126,0.14), transparent 60%),
+      radial-gradient(900px 560px at -8% 96%, rgba(166,129,63,0.12), transparent 60%),
+      var(--bg);
+  }
+  .login-screen[hidden]{display:none;}
+  .login-card{
+    width:100%; max-width:430px; background:var(--panel-solid); border-radius:22px;
+    border:1px solid var(--border); box-shadow:0 30px 70px rgba(58,33,41,0.16);
+    padding:34px 30px;
+  }
+  .login-mark{
+    width:48px;height:48px;border-radius:13px; margin:0 auto 18px;
+    background:linear-gradient(135deg,var(--maroon),#7C3A4C); display:grid; place-items:center;
+    box-shadow:0 6px 16px rgba(90,36,56,0.25);
+  }
+  .login-mark svg{width:24px;height:24px; stroke:#F3E9DD; fill:none; stroke-width:1.8;}
+  .login-title{font-family:'Fraunces', serif; font-size:21px; font-weight:500; color:var(--maroon); text-align:center; margin-bottom:4px;}
+  .login-sub{font-size:12.5px; color:var(--muted); text-align:center; margin-bottom:26px;}
+  .role-option{
+    display:flex; align-items:center; gap:13px; width:100%; text-align:left;
+    padding:12px 14px; border-radius:14px; border:1px solid var(--border-soft);
+    background:rgba(90,36,56,0.02); cursor:pointer; margin-bottom:10px;
+  }
+  .role-option:last-child{margin-bottom:0;}
+  .role-option:hover{background:rgba(181,103,126,0.09); border-color:rgba(181,103,126,0.3);}
+  .role-option-ico{width:36px;height:36px;border-radius:10px; background:rgba(166,129,63,0.14); display:grid; place-items:center; flex-shrink:0;}
+  .role-option-ico svg{width:17px;height:17px; stroke:var(--brass); fill:none; stroke-width:1.7;}
+  .role-option-text b{font-size:13px; display:block; color:var(--text);}
+  .role-option-text span{font-size:10.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+  .login-foot{font-size:10.5px; color:var(--faint); text-align:center; margin-top:20px; line-height:1.5;}
+
+  .session-chip{display:none; align-items:center; gap:10px; padding:6px 6px 6px 14px; border-radius:999px; background:rgba(90,36,56,0.04); border:1px solid var(--border-soft);}
+  .session-chip.show{display:flex;}
+  .session-chip span{font-size:11.5px; color:var(--muted);}
+  .session-chip b{color:var(--text);}
+  .logout-btn{font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--rose); background:rgba(181,103,126,0.1); border:1px solid rgba(181,103,126,0.3); border-radius:999px; padding:4px 10px; cursor:pointer; white-space:nowrap;}
 </style>
 </head>
 <body>
 
-<div class="os">
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 12a8 8 0 0 1 16 0" /><path d="M4 12v1a2 2 0 0 0 2 2" /><path d="M20 12v1a2 2 0 0 1-2 2" /><path d="M12 4v9" /><path d="M10 21h4" /><path d="M12 13v6" /></svg>
+    </div>
+    <div class="login-title">Mary Pippins Recruitment OS</div>
+    <div class="login-sub">Sign in to continue — each account only sees its own view</div>
+
+    <button class="role-option" onclick="loginAs('recruiter')">
+      <div class="role-option-ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c1-3.6 3.6-5.5 6.5-5.5s5.5 1.9 6.5 5.5"/></svg></div>
+      <div class="role-option-text"><b>Recruiter — Sarah Mitchell</b><span>sarah@marypippins.demo</span></div>
+    </button>
+    <button class="role-option" onclick="loginAs('admin')">
+      <div class="role-option-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+      <div class="role-option-text"><b>Admin — Tom Reyes</b><span>tom@marypippins.demo</span></div>
+    </button>
+    <button class="role-option" onclick="loginAs('client')">
+      <div class="role-option-ico"><svg viewBox="0 0 24 24"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V5.5A2 2 0 0 1 10 3.5h4a2 2 0 0 1 2 2v2"/></svg></div>
+      <div class="role-option-text"><b>Client — Sundowner Physio</b><span>contact@sundownerphysio.demo</span></div>
+    </button>
+    <button class="role-option" onclick="loginAs('candidate')">
+      <div class="role-option-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 5-6.5 8-6.5s6.5 2 8 6.5"/></svg></div>
+      <div class="role-option-text"><b>Candidate — Amelia Chen</b><span>amelia.chen@demo</span></div>
+    </button>
+
+    <div class="login-foot">Demo accounts — pick any role to preview that account's view only.<br>In the live product, each person only ever sees their own login.</div>
+  </div>
+</div>
+
+<div class="os" id="appShell" hidden>
+
   <!-- ICON RAIL -->
   <aside class="rail">
     <div class="rail-mark">
@@ -391,11 +463,9 @@
         </div>
       </div>
 
-      <div class="role-tabs" id="roleTabs">
-        <button class="tab active" data-role="recruiter">Recruiter</button>
-        <button class="tab" data-role="admin">Admin</button>
-        <button class="tab" data-role="client">Client</button>
-        <button class="tab" data-role="candidate">Candidate</button>
+      <div class="session-chip show" id="sessionChip">
+        <span>Signed in as <b id="sessionRoleLabel">Recruiter</b></span>
+        <button class="logout-btn" onclick="logout()">Log out</button>
       </div>
 
       <div class="bar-right">
@@ -694,7 +764,7 @@
   </div>
 </div>
 
-<button class="chat-fab" id="chatFab" title="Ask Mary">
+<button class="chat-fab" id="chatFab" title="Ask Mary" hidden>
   <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>
 </button>
 <div class="chat-panel" id="chatPanel">
@@ -824,22 +894,29 @@
   }
 
   function setRole(role){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.role===role));
     document.querySelectorAll('.view').forEach(v=>v.hidden = v.id !== 'view-'+role);
     const u = USERS[role];
     document.getElementById('userName').textContent = u.name;
     document.getElementById('userRole').textContent = u.role;
     document.getElementById('userAv').textContent = u.av;
+    document.getElementById('sessionRoleLabel').textContent = u.role;
     renderRail(role);
   }
 
-  document.getElementById('roleTabs').addEventListener('click', e=>{
-    const btn = e.target.closest('.tab');
-    if(!btn) return;
-    setRole(btn.dataset.role);
-  });
+  function loginAs(role){
+    setRole(role);
+    document.getElementById('loginScreen').hidden = true;
+    document.getElementById('appShell').hidden = false;
+    document.getElementById('chatFab').hidden = false;
+  }
 
-  setRole('recruiter');
+  function logout(){
+    document.getElementById('appShell').hidden = true;
+    document.getElementById('chatFab').hidden = true;
+    document.getElementById('chatPanel').classList.remove('show');
+    document.getElementById('modalOverlay').classList.remove('show');
+    document.getElementById('loginScreen').hidden = false;
+  }
 
   // ---- countdown timer ----
   let remaining = 42*60 + 15;
@@ -1111,3 +1188,4 @@ Include: a short intro paragraph, "Key Responsibilities" (bullet points), "Requi
 </script>
 </body>
 </html>
+
